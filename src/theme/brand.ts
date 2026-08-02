@@ -142,12 +142,17 @@ export const pageBottomPadWithPlayer = {
   md: 'calc(72px + env(safe-area-inset-bottom, 0px))',
 } as const
 
+export const navbarInnerHeight = {
+  xs: 56,
+  md: 64,
+} as const
+
 export const navbarHeight = {
-  xs: 'calc(48px + env(safe-area-inset-top, 0px))',
-  md: '56px',
+  xs: `calc(${navbarInnerHeight.xs}px + env(safe-area-inset-top, 0px))`,
+  md: `${navbarInnerHeight.md}px`,
 } as const
 
 export const scrollMarginTop = {
-  xs: 'calc(48px + env(safe-area-inset-top, 0px))',
-  md: '56px',
+  xs: `calc(${navbarInnerHeight.xs}px + env(safe-area-inset-top, 0px))`,
+  md: `${navbarInnerHeight.md}px`,
 } as const

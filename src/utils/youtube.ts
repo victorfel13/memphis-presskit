@@ -6,6 +6,8 @@ export function getYouTubeVideoId(url: string): string | null {
       const v = u.searchParams.get('v')
       if (v) return v
       const parts = u.pathname.split('/').filter(Boolean)
+      const shortsIdx = parts.indexOf('shorts')
+      if (shortsIdx >= 0 && parts[shortsIdx + 1]) return parts[shortsIdx + 1]
       const embedIdx = parts.indexOf('embed')
       if (embedIdx >= 0 && parts[embedIdx + 1]) return parts[embedIdx + 1]
     }

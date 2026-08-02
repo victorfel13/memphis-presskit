@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
 import { pressKitData } from './data/pressKitData'
 import { PlaybackProvider, usePlayback } from './context/PlaybackContext'
+import { NavigationProvider } from './context/NavigationContext'
 import { Navbar } from './components/Navbar/Navbar'
 import { Inicio } from './components/Inicio/Inicio'
 import { Biografia } from './components/Biografia/Biografia'
@@ -78,8 +79,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <PlaybackProvider>
-      <AppContent />
-    </PlaybackProvider>
+    <NavigationProvider>
+      <PlaybackProvider>
+        <AppContent />
+      </PlaybackProvider>
+    </NavigationProvider>
   )
 }

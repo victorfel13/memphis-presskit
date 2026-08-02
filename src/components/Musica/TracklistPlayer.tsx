@@ -2,13 +2,13 @@ import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useCallback, type MouseEvent } from 'react'
 import { usePlayback, type PlayerTrack } from '../../context/PlaybackContext'
 import type { Track } from '../../data/pressKitData'
+import { spotifyArtistUrl } from '../../data/pressKitData'
 import { brand } from '../../theme/brand'
 import { SpotifyGlyph } from '../SpotifyGlyph'
 
 type TracklistPlayerProps = {
   tracks: Track[]
   buildPlayerTrack: (track: Track) => PlayerTrack
-  epTrackIds: Set<string>
 }
 
 const spotifyBtnSx = {
@@ -29,19 +29,8 @@ const playBtnSx = {
   '&.Mui-disabled': { opacity: 0.35, borderColor: 'rgba(255,255,255,0.08)' },
 } as const
 
-export function TracklistPlayer({ tracks, buildPlayerTrack, epTrackIds }: TracklistPlayerProps) {
-  const {
-    current,
-    playingId,
-    audioRef,
-    playTrack,
-    openSpotify,
-    onAudioPlay,
-    onAudioPause,
-    onAudioEnded,
-  } = usePlayback()
-
-  const activeTrack = current && epTrackIds.has(current.id) ? current : null
+export function TracklistPlayer({ tracks, buildPlayerTrack }: TracklistPlayerProps) {
+  const { current, playingId, playTrack, openSpotify } = usePlayback()
 
   const handleRowClick = useCallback(
     (track: Track) => {
@@ -59,61 +48,15 @@ export function TracklistPlayer({ tracks, buildPlayerTrack, epTrackIds }: Trackl
   )
 
   const handleSpotifyClick = useCallback(
-    (e: MouseEvent, url: string) => {
+    (e: MouseEvent) => {
       e.stopPropagation()
-      openSpotify(url)
+      openSpotify(spotifyArtistUrl)
     },
     [openSpotify],
   )
 
   return (
     <Box sx={{ width: '100%', minWidth: 0 }}>
-      {activeTrack ? (
-        <Box
-          sx={{
-            mb: 2.5,
-            p: { xs: 1.5, md: 2 },
-            border: `1px solid ${brand.borderSubtle}`,
-            bgcolor: 'rgba(255,255,255,0.02)',
-          }}
-        >
-          <Typography sx={{ fontWeight: 700, fontSize: '0.95rem', color: brand.white }}>
-            {activeTrack.title}
-          </Typography>
-          <Typography sx={{ fontSize: '0.72rem', color: brand.textMuted, mt: 0.25, mb: 1.5 }}>
-            {activeTrack.artist}
-          </Typography>
-
-          {activeTrack.audioSrc ? (
-            <Box
-              key={activeTrack.id}
-              component="audio"
-              ref={audioRef}
-              controls
-              controlsList="nodownload"
-              src={activeTrack.audioSrc}
-              preload="metadata"
-              aria-label={`Reproducir ${activeTrack.title}`}
-              onPlay={onAudioPlay}
-              onPause={onAudioPause}
-              onEnded={onAudioEnded}
-              sx={{
-                width: '100%',
-                minWidth: 0,
-                height: 40,
-                display: 'block',
-                accentColor: brand.orange,
-                colorScheme: 'dark',
-              }}
-            />
-          ) : (
-            <Typography sx={{ fontSize: '0.8rem', color: brand.textMuted, lineHeight: 1.5 }}>
-              Vista previa no disponible — usa el icono de Spotify junto a cada canción.
-            </Typography>
-          )}
-        </Box>
-      ) : null}
-
       <Typography sx={{ fontWeight: 800, mb: 1.5, fontSize: '0.95rem' }}>
         Tracklist
       </Typography>
@@ -190,8 +133,7 @@ export function TracklistPlayer({ tracks, buildPlayerTrack, epTrackIds }: Trackl
               <IconButton
                 size="small"
                 aria-label={`Abrir ${track.title} en Spotify`}
-                disabled={!track.spotifyUrl}
-                onClick={(e) => track.spotifyUrl && handleSpotifyClick(e, track.spotifyUrl)}
+                onClick={handleSpotifyClick}
                 sx={spotifyBtnSx}
               >
                 <SpotifyGlyph size={18} />

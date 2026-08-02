@@ -11,7 +11,8 @@ import {
 } from '@mui/material'
 import { useCallback, useState } from 'react'
 import type { NavItem } from '../../data/pressKitData'
-import { brand, navbarHeight } from '../../theme/brand'
+import { useNavigation } from '../../context/NavigationContext'
+import { brand, navbarHeight, navbarInnerHeight } from '../../theme/brand'
 import { PageContent } from '../shared/PageContent'
 import { FlameIcon } from '../shared/FlameIcon'
 
@@ -27,13 +28,26 @@ function MenuIcon() {
   )
 }
 
+const navSlotSx = {
+  height: '100%',
+  minWidth: { xs: 44, md: 52 },
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+} as const
+
 export function Navbar({ items }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { navigateTo } = useNavigation()
 
-  const goTo = useCallback((id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'auto', block: 'start' })
-    setMobileOpen(false)
-  }, [])
+  const goTo = useCallback(
+    (id: string) => {
+      navigateTo(id)
+      setMobileOpen(false)
+    },
+    [navigateTo],
+  )
 
   const linkSx = {
     color: brand.white,
@@ -43,6 +57,7 @@ export function Navbar({ items }: NavbarProps) {
     textTransform: 'uppercase' as const,
     minWidth: 0,
     p: 0,
+    lineHeight: 1,
     '&:hover': { bgcolor: 'transparent', color: brand.orange },
   }
 
@@ -61,67 +76,92 @@ export function Navbar({ items }: NavbarProps) {
         pt: 'env(safe-area-inset-top, 0px)',
       }}
     >
-      <PageContent sx={{ py: 0 }}>
+      <PageContent sx={{ py: 0, height: '100%' }}>
         <Stack
           direction="row"
           useFlexGap
           sx={{
-            height: { xs: '48px', md: '56px' },
+            height: { xs: `${navbarInnerHeight.xs}px`, md: `${navbarInnerHeight.md}px` },
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: 1,
           }}
         >
-        <IconButton
-          onClick={() => goTo('inicio')}
-          aria-label="Menfis Caravan — inicio"
-          sx={{ p: 0.5, color: brand.white, '&:hover': { bgcolor: 'transparent', opacity: 0.85 } }}
-        >
-          <FlameIcon size={32} />
-        </IconButton>
-
-        <Stack direction="row" useFlexGap spacing={2.5} sx={{ display: { xs: 'none', md: 'flex' } }}>
-          {items.slice(1).map((item) => (
-            <Button key={item.id} onClick={() => goTo(item.id)} sx={linkSx}>
-              {item.label}
-            </Button>
-          ))}
-        </Stack>
-
-        <IconButton
-          type="button"
-          aria-label="Abrir menú"
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen(true)}
-          sx={{ color: brand.white, display: { xs: 'inline-flex', md: 'none' } }}
-        >
-          <MenuIcon />
-        </IconButton>
-
-        <Drawer
-          anchor="right"
-          open={mobileOpen}
-          onClose={() => setMobileOpen(false)}
-          disableScrollLock
-          slotProps={{
-            paper: { sx: { width: 280, bgcolor: brand.black, color: brand.white } },
-          }}
-        >
-          <Box sx={{ px: 2, py: 2, fontSize: '0.85rem', letterSpacing: '0.12em', opacity: 0.5 }}>
-            MENÚ
+          <Box
+            component="button"
+            type="button"
+            onClick={() => goTo('inicio')}
+            aria-label="Menfis Caravan — inicio"
+            sx={{
+              ...navSlotSx,
+              justifyContent: 'flex-start',
+              border: 'none',
+              bgcolor: 'transparent',
+              cursor: 'pointer',
+              p: 0,
+              color: brand.white,
+              '&:hover': { opacity: 0.85 },
+            }}
+          >
+            <FlameIcon height={{ xs: 50, md: 58 }} />
           </Box>
-          <Divider sx={{ borderColor: brand.borderSubtle }} />
-          <List dense>
-            {items.map((item) => (
-              <ListItemButton key={item.id} onClick={() => goTo(item.id)}>
-                <ListItemText
-                  primary={item.label}
-                  slotProps={{ primary: { sx: { letterSpacing: '0.06em' } } }}
-                />
-              </ListItemButton>
+
+          <Stack
+            direction="row"
+            useFlexGap
+            spacing={2.5}
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              alignItems: 'center',
+              height: '100%',
+            }}
+          >
+            {items.slice(1).map((item) => (
+              <Button key={item.id} onClick={() => goTo(item.id)} sx={linkSx}>
+                {item.label}
+              </Button>
             ))}
-          </List>
-        </Drawer>
+          </Stack>
+
+          <IconButton
+            type="button"
+            aria-label="Abrir menú"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen(true)}
+            sx={{
+              ...navSlotSx,
+              color: brand.white,
+              display: { xs: 'inline-flex', md: 'none' },
+              borderRadius: 1,
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+
+          <Drawer
+            anchor="right"
+            open={mobileOpen}
+            onClose={() => setMobileOpen(false)}
+            disableScrollLock
+            slotProps={{
+              paper: { sx: { width: 280, bgcolor: brand.black, color: brand.white } },
+            }}
+          >
+            <Box sx={{ px: 2, py: 2, fontSize: '0.85rem', letterSpacing: '0.12em', opacity: 0.5 }}>
+              MENÚ
+            </Box>
+            <Divider sx={{ borderColor: brand.borderSubtle }} />
+            <List dense>
+              {items.map((item) => (
+                <ListItemButton key={item.id} onClick={() => goTo(item.id)}>
+                  <ListItemText
+                    primary={item.label}
+                    slotProps={{ primary: { sx: { letterSpacing: '0.06em' } } }}
+                  />
+                </ListItemButton>
+              ))}
+            </List>
+          </Drawer>
         </Stack>
       </PageContent>
     </Box>

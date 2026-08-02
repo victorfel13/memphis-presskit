@@ -1,4 +1,5 @@
 import { Box } from '@mui/material'
+import { brand } from '../../theme/brand'
 import { ThresholdImage } from './ThresholdImage'
 
 type AnimatedLighterProps = {
@@ -30,7 +31,8 @@ export function AnimatedLighter({ src, alt, size = 260, fill = false, align = 'c
         threshold={0.44}
         dither
         lightColor="#f2e8dc"
-        darkColor="#101010"
+        darkColor={brand.black}
+        backgroundColor={brand.black}
         objectFit="contain"
       />
     </Box>

@@ -10,12 +10,12 @@ html {
   overflow-x: clip;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-padding-top: calc(48px + env(safe-area-inset-top, 0px));
+  scroll-padding-top: calc(56px + env(safe-area-inset-top, 0px));
 }
 
 @media (min-width: 900px) {
   html {
-    scroll-padding-top: 56px;
+    scroll-padding-top: 64px;
     scroll-behavior: smooth;
   }
 }
@@ -95,4 +95,122 @@ video,
 svg {
   max-width: 100%;
   height: auto;
+}
+
+/** Barra de progreso del reproductor — naranja Menfis */
+.global-player__progress {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    #e8722a 0%,
+    #e8722a var(--progress, 0%),
+    rgba(255, 255, 255, 0.12) var(--progress, 0%),
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  outline: none;
+}
+
+.global-player__progress::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.global-player__progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  border-radius: 50%;
+  border: 2px solid #121212;
+  background: #e8722a;
+  box-shadow: 0 0 0 1px rgba(232, 114, 42, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.global-player__progress:hover::-webkit-slider-thumb,
+.global-player__progress:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 3px rgba(232, 114, 42, 0.25);
+}
+
+.global-player__progress::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.global-player__progress::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: #e8722a;
+}
+
+.global-player__progress::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #121212;
+  background: #e8722a;
+  box-shadow: 0 0 0 1px rgba(232, 114, 42, 0.45);
+}
+
+.global-player__progress:focus-visible {
+  outline: none;
+}
+
+.global-player__progress:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(232, 114, 42, 0.25);
+}
+
+/** Transición entre secciones — cortina + filo naranja */
+.page-transition {
+  pointer-events: all;
+}
+
+.page-transition__panel {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #121212 0%, #000 100%);
+  animation: pageCurtain 0.56s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  will-change: transform;
+}
+
+.page-transition__edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #e8722a 20%,
+    #fff59d 50%,
+    #e8722a 80%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 18px rgba(232, 114, 42, 0.85),
+    0 0 40px rgba(232, 114, 42, 0.35);
+}
+
+@keyframes pageCurtain {
+  0% {
+    transform: translateY(100%);
+  }
+  44% {
+    transform: translateY(0);
+  }
+  56% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
 }

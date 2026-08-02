@@ -1,6 +1,6 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import type { SocialLinks } from '../../data/pressKitData'
-import { brand, bodyFontFamily, bokorClass, heroSubtitleSx, heroTitleSx, navbarHeight } from '../../theme/brand'
+import { brand, bodyFontFamily, bokorClass, heroSubtitleSx, heroTitleSx, navbarHeight, navbarInnerHeight } from '../../theme/brand'
 import { PageContent } from '../shared/PageContent'
 import { AnimatedLighter } from '../shared/AnimatedLighter'
 import { SpotifyGlyph } from '../SpotifyGlyph'
@@ -40,7 +40,7 @@ export function Inicio({ heroSrc, title, headlineLines, subtitle, description, s
         sx={{
           pt: { xs: navbarHeight.xs, md: navbarHeight.md },
           pb: { xs: 4, md: 6 },
-          minHeight: { md: 'calc(100dvh - 56px)' },
+          minHeight: { md: `calc(100dvh - ${navbarInnerHeight.md}px)` },
           display: 'flex',
           alignItems: { md: 'center' },
         }}

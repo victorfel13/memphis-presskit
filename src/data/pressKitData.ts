@@ -2,10 +2,16 @@
  * DATOS DEL PRESS KIT — edita aquí textos, links e imágenes.
  *
  * Para añadir canciones:
- * 1. Pon el archivo en `src/assets/audio/` (ej. purple-hair.mp3)
+ * 1. Pon el archivo en `src/assets/audio/` (ej. overdooze.mp3)
  * 2. Impórtalo abajo (como heroGroup)
  * 3. Asigna `audioSrc` al track correspondiente
  */
+
+// ─── Audio — EP (mp3 en src/assets/audio/) ───────────────────────────────────
+import audioBlindedByDust from '../assets/audio/blinded-by-dust.mp3'
+import audioOverdooze from '../assets/audio/overdooze.mp3'
+import audioRous from '../assets/audio/rous.mp3'
+import audioWolfApache from '../assets/audio/wolf-apache.mp3'
 
 // ─── Imágenes — hero ─────────────────────────────────────────────────────────
 import heroImage from '../assets/hero/hero.jpeg'
@@ -91,6 +97,11 @@ export type SocialLinks = {
 
 // ─── Contenido ───────────────────────────────────────────────────────────────
 
+export const spotifyArtistUrl = 'https://open.spotify.com/artist/5X3yhhxnqw48Z4RCmfHw0C'
+export const youtubeChannelUrl = 'https://www.youtube.com/@MenfisCaravan'
+export const appleMusicArtistUrl = 'https://music.apple.com/us/artist/menfis-caravan/1872522309'
+export const bandcampAlbumUrl = 'https://menfiscaravan.bandcamp.com/album/the-purple-dust'
+
 export const pressKitData = {
   bandName: 'MENFIS CARAVAN',
 
@@ -112,8 +123,8 @@ export const pressKitData = {
     description:
       'Menfis Caravan transforma la pesadez del metal en una travesía sonora donde convergen el desierto, la psicodelia y la búsqueda de significado.',
     social: {
-      spotify: 'https://open.spotify.com/search/Menfis%20Caravan',
-      youtube: 'https://www.youtube.com/results?search_query=Menfis+Caravan',
+      spotify: spotifyArtistUrl,
+      youtube: youtubeChannelUrl,
       facebook: 'https://www.facebook.com/search/top?q=menfis%20caravan',
       instagram: 'https://www.instagram.com/explore/search/keyword/?q=menfis%20caravan',
     } satisfies SocialLinks,
@@ -172,30 +183,35 @@ export const pressKitData = {
       releaseLabel: 'EP · 2026',
       description: [
         'El primer lanzamiento oficial de Menfis Caravan representa la esencia de su propuesta musical: una combinación de metal alternativo, stoner, doom, grunge y psicodelia que transita entre la pesadez, la introspección y la exploración sonora.',
-        'A través de tres composiciones, la banda construye un viaje que refleja su identidad mística y desértica.',
+        'A través de cuatro composiciones, la banda construye un viaje que refleja su identidad mística y desértica.',
       ],
       tracks: [
         {
-          id: 'purple-hair',
-          title: 'Purple Hair',
-          spotifyUrl: 'https://open.spotify.com/search/Menfis%20Caravan%20Purple%20Hair',
+          id: 'overdooze',
+          title: 'Overdooze',
+          audioSrc: audioOverdooze,
         },
         {
           id: 'blinded-by-dust',
           title: 'Blinded by Dust',
-          spotifyUrl: 'https://open.spotify.com/search/Menfis%20Caravan%20Blinded%20by%20Dust',
+          audioSrc: audioBlindedByDust,
         },
         {
-          id: 'like-a-crucifixion',
-          title: 'Like a Crucifixion',
-          spotifyUrl: 'https://open.spotify.com/search/Menfis%20Caravan%20Like%20a%20Crucifixion',
+          id: 'rous',
+          title: 'Rous',
+          audioSrc: audioRous,
+        },
+        {
+          id: 'wolf-apache',
+          title: 'Wolf Apache',
+          audioSrc: audioWolfApache,
         },
       ] satisfies Track[],
       platforms: [
-        { label: 'Spotify', url: 'https://open.spotify.com/search/Menfis%20Caravan%20Purple%20Dust' },
-        { label: 'YouTube', url: 'https://www.youtube.com/results?search_query=Menfis+Caravan+Purple+Dust' },
-        { label: 'Apple Music', url: 'https://music.apple.com/search?term=Menfis%20Caravan' },
-        { label: 'Bandcamp', url: 'https://bandcamp.com/search?q=Menfis%20Caravan' },
+        { label: 'Spotify', url: spotifyArtistUrl },
+        { label: 'YouTube', url: youtubeChannelUrl },
+        { label: 'Apple Music', url: appleMusicArtistUrl },
+        { label: 'Bandcamp', url: bandcampAlbumUrl },
       ] satisfies PlatformLink[],
     },
   },
@@ -206,9 +222,9 @@ export const pressKitData = {
     description:
       'Presentaciones en vivo, sesiones y material audiovisual oficial de Menfis Caravan.',
     items: [
-      { title: 'Videoclip', url: 'https://www.youtube.com/results?search_query=Menfis+Caravan', category: 'videoclip' },
-      { title: 'Live Session', url: 'https://www.youtube.com/results?search_query=Menfis+Caravan+live', category: 'live' },
-      { title: 'Presentación en vivo', url: 'https://www.youtube.com/results?search_query=Menfis+Caravan+concierto', category: 'live' },
+      { title: 'Videoclip', url: 'https://www.youtube.com/watch?v=NtE0yziO3k4', category: 'videoclip' },
+      { title: 'Black Bleeding', url: 'https://www.youtube.com/shorts/jzvqe2fNckg', category: 'live' },
+      { title: 'Presentación en vivo', url: 'https://www.youtube.com/watch?v=MsozeUAy1ys', category: 'live' },
     ] satisfies VideoItem[],
   },
 
@@ -222,8 +238,8 @@ export const pressKitData = {
       email: 'menfiscaravan@gmail.com',
     },
     redes: {
-      spotify: 'https://open.spotify.com/search/Menfis%20Caravan',
-      youtube: 'https://www.youtube.com/results?search_query=Menfis+Caravan',
+      spotify: spotifyArtistUrl,
+      youtube: youtubeChannelUrl,
       facebook: 'https://www.facebook.com/search/top?q=menfis%20caravan',
       instagram: 'https://www.instagram.com/explore/search/keyword/?q=menfis%20caravan',
     } satisfies SocialLinks,

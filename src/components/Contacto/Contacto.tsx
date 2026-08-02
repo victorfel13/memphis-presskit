@@ -28,7 +28,7 @@ export function Contacto({ title, booking, form }: ContactoProps) {
     <Box id="contacto" component="section" sx={{ bgcolor: brand.surface, borderTop: `1px solid ${brand.borderSubtle}` }}>
       <PageContent section>
         <Box sx={{ width: '100%', maxWidth: 720, mx: 'auto', minWidth: 0 }}>
-          <SectionTitle align="center">{title}</SectionTitle>
+          <SectionTitle>{title}</SectionTitle>
           <ContactForm recipientEmail={booking.email} form={form} />
         </Box>
       </PageContent>

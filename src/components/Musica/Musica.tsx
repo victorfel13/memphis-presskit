@@ -1,7 +1,8 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { usePlayback, type PlayerTrack } from '../../context/PlaybackContext'
 import type { PlatformLink, Track } from '../../data/pressKitData'
+import { spotifyArtistUrl } from '../../data/pressKitData'
 import { brand, colorPhotoSx, archivoBlackClass, archivoBlackSx } from '../../theme/brand'
 import { PageContent } from '../shared/PageContent'
 import { BodyText } from '../shared/BodyText'
@@ -33,21 +34,19 @@ function buildPlayerTrack(bandName: string, ep: EpData, track: Track): PlayerTra
     coverSrc: ep.coverSrc,
     coverTint: ep.coverTint,
     audioSrc: track.audioSrc,
-    spotifyUrl: track.spotifyUrl,
+    spotifyUrl: spotifyArtistUrl,
   }
 }
 
 export function Musica({ title, bandName, ep }: MusicaProps) {
   const { playingId, playTrack, current } = usePlayback()
-  const epTrackIds = useMemo(() => new Set(ep.tracks.map((t) => t.id)), [ep.tracks])
 
   const buildTrack = useCallback(
     (track: Track) => buildPlayerTrack(bandName, ep, track),
     [bandName, ep],
   )
 
-  const selectedTrack =
-    ep.tracks.find((t) => t.id === current?.id && epTrackIds.has(t.id)) ?? ep.tracks[0]
+  const selectedTrack = ep.tracks.find((t) => t.id === current?.id) ?? ep.tracks[0]
   const isPlaying = selectedTrack ? playingId === selectedTrack.id : false
   const hasAudio = Boolean(selectedTrack?.audioSrc)
 
@@ -132,7 +131,7 @@ export function Musica({ title, bandName, ep }: MusicaProps) {
               <BodyText paragraphs={ep.description} />
             </Box>
 
-            <TracklistPlayer tracks={ep.tracks} buildPlayerTrack={buildTrack} epTrackIds={epTrackIds} />
+            <TracklistPlayer tracks={ep.tracks} buildPlayerTrack={buildTrack} />
 
             <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1 }}>
               {ep.platforms.map((platform) => (

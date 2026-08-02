@@ -35,7 +35,7 @@ export function Banda({ subtitle, members }: BandaProps) {
   return (
     <Box id="banda" component="section" sx={{ bgcolor: brand.black }}>
       <PageContent section>
-        <Box sx={{ width: '100%', mb: { xs: 3, md: 4 } }}>
+        <Box sx={{ width: '100%', mb: { xs: 3, md: 4 }, textAlign: 'center' }}>
           <SubsectionLabel>{subtitle}</SubsectionLabel>
         </Box>
 

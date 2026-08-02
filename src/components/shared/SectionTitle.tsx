@@ -4,16 +4,32 @@ import { LightningDivider } from './LightningDivider'
 
 type SectionTitleProps = {
   children: string
-  align?: 'left' | 'center'
 }
 
-export function SectionTitle({ children, align = 'left' }: SectionTitleProps) {
+export function SectionTitle({ children }: SectionTitleProps) {
   return (
-    <Box sx={{ mb: { xs: 3, md: 4 }, textAlign: align }}>
-      <Typography component="h2" className={bokorClass} sx={sectionTitleSx}>
+    <Box
+      sx={{
+        mb: { xs: 3, md: 4 },
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
+      }}
+    >
+      <Typography
+        component="h2"
+        className={bokorClass}
+        sx={{
+          ...sectionTitleSx,
+          width: '100%',
+          textAlign: 'center',
+        }}
+      >
         {children}
       </Typography>
-      <LightningDivider align={align} />
+      <LightningDivider align="center" />
     </Box>
   )
 }

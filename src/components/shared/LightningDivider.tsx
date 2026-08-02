@@ -7,7 +7,7 @@ type LightningDividerProps = {
 }
 
 /** Divisor ornamental — rayos / relámpagos estilo metal */
-export function LightningDivider({ align = 'left', width = { xs: 200, md: 260 } }: LightningDividerProps) {
+export function LightningDivider({ align = 'center', width = { xs: 240, md: 300 } }: LightningDividerProps) {
   return (
     <Box
       aria-hidden
