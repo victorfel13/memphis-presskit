@@ -1,6 +1,6 @@
 import { Box, Dialog, DialogContent, IconButton, Typography } from '@mui/material'
 import { useCallback, useState } from 'react'
-import type { GalleryImage } from '../../data/pressKitData'
+import type { GalleryImage } from '../../data/pressKitAssets'
 import { brand, colorPhotoSx } from '../../theme/brand'
 
 type GalleryCarouselProps = {

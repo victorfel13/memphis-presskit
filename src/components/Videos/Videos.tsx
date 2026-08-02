@@ -1,7 +1,7 @@
 import { Box, Dialog, DialogContent, IconButton, Stack, Typography } from '@mui/material'
 import { useCallback, useState } from 'react'
 import { usePlayback } from '../../context/PlaybackContext'
-import type { VideoItem } from '../../data/pressKitData'
+import type { VideoItem } from '../../data/pressKitAssets'
 import { brand, bodyParagraphSx, bwPhotoSx, proseMaxWidth } from '../../theme/brand'
 import { PageContent } from '../shared/PageContent'
 import { SectionTitle } from '../shared/SectionTitle'

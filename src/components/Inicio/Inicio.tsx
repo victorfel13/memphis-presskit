@@ -1,5 +1,5 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material'
-import type { SocialLinks } from '../../data/pressKitData'
+import type { SocialLinks } from '../../data/pressKitAssets'
 import { brand, bodyFontFamily, bokorClass, heroSubtitleSx, heroTitleSx, navbarHeight, navbarInnerHeight } from '../../theme/brand'
 import { PageContent } from '../shared/PageContent'
 import { AnimatedLighter } from '../shared/AnimatedLighter'

@@ -10,11 +10,13 @@ import {
   Stack,
 } from '@mui/material'
 import { useCallback, useState } from 'react'
-import type { NavItem } from '../../data/pressKitData'
+import type { NavItem } from '../../data/pressKitAssets'
 import { useNavigation } from '../../context/NavigationContext'
+import { useLanguage } from '../../context/LanguageContext'
 import { brand, navbarHeight, navbarInnerHeight } from '../../theme/brand'
 import { PageContent } from '../shared/PageContent'
 import { FlameIcon } from '../shared/FlameIcon'
+import { LanguageToggle } from '../shared/LanguageToggle'
 
 type NavbarProps = {
   items: NavItem[]
@@ -40,6 +42,8 @@ const navSlotSx = {
 export function Navbar({ items }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { navigateTo } = useNavigation()
+  const { data } = useLanguage()
+  const { ui } = data
 
   const goTo = useCallback(
     (id: string) => {
@@ -91,7 +95,7 @@ export function Navbar({ items }: NavbarProps) {
             component="button"
             type="button"
             onClick={() => goTo('inicio')}
-            aria-label="Menfis Caravan — inicio"
+            aria-label={ui.homeAria}
             sx={{
               ...navSlotSx,
               justifyContent: 'flex-start',
@@ -121,22 +125,25 @@ export function Navbar({ items }: NavbarProps) {
                 {item.label}
               </Button>
             ))}
+            <LanguageToggle />
           </Stack>
 
-          <IconButton
-            type="button"
-            aria-label="Abrir menú"
-            aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen(true)}
-            sx={{
-              ...navSlotSx,
-              color: brand.white,
-              display: { xs: 'inline-flex', md: 'none' },
-              borderRadius: 1,
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Stack direction="row" spacing={0.5} sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
+            <LanguageToggle compact />
+            <IconButton
+              type="button"
+              aria-label={ui.openMenu}
+              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen(true)}
+              sx={{
+                ...navSlotSx,
+                color: brand.white,
+                borderRadius: 1,
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Stack>
 
           <Drawer
             anchor="right"
@@ -148,7 +155,7 @@ export function Navbar({ items }: NavbarProps) {
             }}
           >
             <Box sx={{ px: 2, py: 2, fontSize: '0.85rem', letterSpacing: '0.12em', opacity: 0.5 }}>
-              MENÚ
+              {ui.menu}
             </Box>
             <Divider sx={{ borderColor: brand.borderSubtle }} />
             <List dense>

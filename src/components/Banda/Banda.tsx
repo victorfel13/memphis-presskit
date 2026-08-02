@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import type { Member } from '../../data/pressKitData'
+import type { Member } from '../../data/pressKitAssets'
 import { brand } from '../../theme/brand'
 import { MemberPhoto } from '../shared/MemberPhoto'
 import { PageContent } from '../shared/PageContent'

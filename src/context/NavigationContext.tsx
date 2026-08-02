@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -32,6 +33,19 @@ type NavigationProviderProps = {
 export function NavigationProvider({ children }: NavigationProviderProps) {
   const targetRef = useRef<string | null>(null)
   const [active, setActive] = useState(false)
+
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+
+    const hashId = window.location.hash.replace(/^#/, '')
+    if (hashId && document.getElementById(hashId)) {
+      scrollToSection(hashId)
+      return
+    }
+    scrollToSection('estreno')
+  }, [])
 
   const finishTransition = useCallback(() => {
     setActive(false)

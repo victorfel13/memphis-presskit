@@ -1,21 +1,24 @@
 import { Box } from '@mui/material'
-import { pressKitData } from './data/pressKitData'
 import { PlaybackProvider, usePlayback } from './context/PlaybackContext'
 import { NavigationProvider } from './context/NavigationContext'
+import { LanguageProvider, useLanguage } from './context/LanguageContext'
 import { Navbar } from './components/Navbar/Navbar'
 import { Inicio } from './components/Inicio/Inicio'
+import { Estreno } from './components/Estreno/Estreno'
 import { Biografia } from './components/Biografia/Biografia'
 import { Banda } from './components/Banda/Banda'
 import { Propuesta } from './components/Propuesta/Propuesta'
 import { Musica } from './components/Musica/Musica'
 import { Videos } from './components/Videos/Videos'
+import { Tienda } from './components/Tienda/Tienda'
 import { Contacto } from './components/Contacto/Contacto'
 import { Footer } from './components/Footer/Footer'
 import { GlobalPlayer } from './components/GlobalPlayer/GlobalPlayer'
 import { brand, pageBottomPadWithPlayer, scrollMarginTop } from './theme/brand'
 
 function AppContent() {
-  const { bandName, nav, inicio, biografia, banda, propuesta, musica, videos, contacto, footer } = pressKitData
+  const { data } = useLanguage()
+  const { bandName, nav, inicio, estreno, biografia, banda, propuesta, musica, videos, tienda, contacto, footer } = data
   const { current } = usePlayback()
 
   return (
@@ -44,6 +47,18 @@ function AppContent() {
         social={inicio.social}
       />
 
+      <Estreno
+        title={estreno.title}
+        subtitle={estreno.subtitle}
+        trackTitle={estreno.trackTitle}
+        releaseLabel={estreno.releaseLabel}
+        description={estreno.description}
+        coverSrc={estreno.coverSrc}
+        preSaveUrl={estreno.preSaveUrl}
+        preSaveLabel={estreno.preSaveLabel}
+        preSaveHint={estreno.preSaveHint}
+      />
+
       <Biografia
         title={biografia.title}
         subtitle={biografia.subtitle}
@@ -55,13 +70,32 @@ function AppContent() {
 
       <Banda subtitle={banda.subtitle} members={banda.members} />
 
-      <Musica title={musica.title} bandName={bandName} ep={musica.ep} />
+      <Musica
+        title={musica.title}
+        bandName={bandName}
+        coverSrc={musica.coverSrc}
+        coverTint={musica.coverTint}
+        description={musica.description}
+        tracks={musica.tracks}
+        platforms={musica.platforms}
+      />
 
       <Videos
         title={videos.title}
         subtitle={videos.subtitle}
         description={videos.description}
         items={videos.items}
+      />
+
+      <Tienda
+        title={tienda.title}
+        subtitle={tienda.subtitle}
+        description={tienda.description}
+        imageSrc={tienda.imageSrc}
+        imageAlt={tienda.imageAlt}
+        whatsappLabel={tienda.whatsappLabel}
+        whatsappUrl={tienda.whatsappUrl}
+        phoneDisplay={tienda.phoneDisplay}
       />
 
       <Contacto
@@ -79,10 +113,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <NavigationProvider>
-      <PlaybackProvider>
-        <AppContent />
-      </PlaybackProvider>
-    </NavigationProvider>
+    <LanguageProvider>
+      <NavigationProvider>
+        <PlaybackProvider>
+          <AppContent />
+        </PlaybackProvider>
+      </NavigationProvider>
+    </LanguageProvider>
   )
 }

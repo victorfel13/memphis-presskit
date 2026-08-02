@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material'
-import type { SocialLinks } from '../../data/pressKitData'
+import type { SocialLinks } from '../../data/pressKitAssets'
 import { brand } from '../../theme/brand'
 import { PageContent } from '../shared/PageContent'
 import { SocialIconLinks } from '../shared/SocialIconLinks'

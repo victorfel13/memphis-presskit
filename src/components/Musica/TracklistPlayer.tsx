@@ -1,8 +1,9 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useCallback, type MouseEvent } from 'react'
 import { usePlayback, type PlayerTrack } from '../../context/PlaybackContext'
-import type { Track } from '../../data/pressKitData'
-import { spotifyArtistUrl } from '../../data/pressKitData'
+import type { Track } from '../../data/pressKitAssets'
+import { spotifyArtistUrl } from '../../data/pressKitAssets'
+import { useLanguage } from '../../context/LanguageContext'
 import { brand } from '../../theme/brand'
 import { SpotifyGlyph } from '../SpotifyGlyph'
 
@@ -30,6 +31,8 @@ const playBtnSx = {
 } as const
 
 export function TracklistPlayer({ tracks, buildPlayerTrack }: TracklistPlayerProps) {
+  const { data } = useLanguage()
+  const { ui } = data
   const { current, playingId, playTrack, openSpotify } = usePlayback()
 
   const handleRowClick = useCallback(
@@ -58,7 +61,7 @@ export function TracklistPlayer({ tracks, buildPlayerTrack }: TracklistPlayerPro
   return (
     <Box sx={{ width: '100%', minWidth: 0 }}>
       <Typography sx={{ fontWeight: 800, mb: 1.5, fontSize: '0.95rem' }}>
-        Tracklist
+        {ui.tracklist}
       </Typography>
 
       <Stack spacing={0} sx={{ mb: 3 }}>
@@ -120,7 +123,7 @@ export function TracklistPlayer({ tracks, buildPlayerTrack }: TracklistPlayerPro
 
               <IconButton
                 size="small"
-                aria-label={trackPlaying ? `Pausar ${track.title}` : `Reproducir ${track.title}`}
+                aria-label={trackPlaying ? `${ui.pause} ${track.title}` : `${ui.play} ${track.title}`}
                 disabled={!track.audioSrc}
                 onClick={(e) => handlePlayClick(e, track)}
                 sx={playBtnSx}
@@ -132,7 +135,7 @@ export function TracklistPlayer({ tracks, buildPlayerTrack }: TracklistPlayerPro
 
               <IconButton
                 size="small"
-                aria-label={`Abrir ${track.title} en Spotify`}
+                aria-label={ui.openTrackSpotify(track.title)}
                 onClick={handleSpotifyClick}
                 sx={spotifyBtnSx}
               >

@@ -1,6 +1,6 @@
 import { Box, IconButton, Typography } from '@mui/material'
 import { useCallback, useState } from 'react'
-import type { Member } from '../../data/pressKitData'
+import type { Member } from '../../data/pressKitAssets'
 import { brand } from '../../theme/brand'
 import { MemberPhoto } from '../shared/MemberPhoto'
 

@@ -1,5 +1,5 @@
 import { Box, Stack } from '@mui/material'
-import type { GalleryImage } from '../../data/pressKitData'
+import type { GalleryImage } from '../../data/pressKitAssets'
 import { brand } from '../../theme/brand'
 import { PageContent } from '../shared/PageContent'
 import { BodyText } from '../shared/BodyText'

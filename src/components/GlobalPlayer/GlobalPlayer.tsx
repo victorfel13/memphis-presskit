@@ -1,6 +1,7 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useCallback, useEffect, useState, type ChangeEvent, type CSSProperties, type MouseEvent } from 'react'
-import { spotifyArtistUrl } from '../../data/pressKitData'
+import { spotifyArtistUrl } from '../../data/pressKitAssets'
+import { useLanguage } from '../../context/LanguageContext'
 import { usePlayback } from '../../context/PlaybackContext'
 import { useNavigation } from '../../context/NavigationContext'
 import { brand } from '../../theme/brand'
@@ -49,6 +50,8 @@ export function GlobalPlayer() {
     onAudioEnded,
   } = usePlayback()
   const { isTransitioning } = useNavigation()
+  const { data } = useLanguage()
+  const { ui } = data
 
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -116,7 +119,7 @@ export function GlobalPlayer() {
     <Box
       id="global-player"
       component="aside"
-      aria-label="Reproductor de música"
+      aria-label={ui.musicPlayer}
       sx={{
         position: 'fixed',
         bottom: 0,
@@ -201,7 +204,7 @@ export function GlobalPlayer() {
 
               <IconButton
                 size="small"
-                aria-label={isPlaying ? `Pausar ${current.title}` : `Reproducir ${current.title}`}
+                aria-label={isPlaying ? `${ui.pause} ${current.title}` : `${ui.play} ${current.title}`}
                 onClick={handleTogglePlay}
                 sx={playBtnSx}
               >
@@ -241,7 +244,7 @@ export function GlobalPlayer() {
                   step={0.1}
                   value={progress}
                   onChange={handleSeek}
-                  aria-label={`Progreso de ${current.title}`}
+                  aria-label={ui.trackProgress(current.title)}
                   aria-valuemin={0}
                   aria-valuemax={duration || 0}
                   aria-valuenow={progress}
@@ -266,7 +269,7 @@ export function GlobalPlayer() {
 
               <IconButton
                 size="small"
-                aria-label="Abrir Menfis Caravan en Spotify"
+                aria-label={ui.openSpotify}
                 onClick={() => openSpotify(spotifyArtistUrl)}
                 sx={spotifyBtnSx}
               >
