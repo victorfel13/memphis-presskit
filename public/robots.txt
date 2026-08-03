@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://menfiscaravan.com/sitemap.xml
