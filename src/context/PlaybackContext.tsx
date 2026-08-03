@@ -9,6 +9,11 @@ import {
   type ReactNode,
   type RefObject,
 } from 'react'
+import {
+  PREVIEW_SECONDS,
+  previewEndKindForTrack,
+  type PreviewEndKind,
+} from '../constants/preview'
 
 /** Tema que el reproductor entiende — lo arma Música al pulsar play */
 export type PlayerTrack = {
@@ -24,6 +29,9 @@ export type PlayerTrack = {
 type PlaybackContextValue = {
   current: PlayerTrack | null
   playingId: string | null
+  previewEnded: boolean
+  previewEndKind: PreviewEndKind | null
+  previewLimit: number
   audioRef: RefObject<HTMLAudioElement | null>
   playTrack: (track: PlayerTrack) => void
   openSpotify: (url: string) => void
@@ -31,6 +39,7 @@ type PlaybackContextValue = {
   onAudioPlay: () => void
   onAudioPause: () => void
   onAudioEnded: () => void
+  resetPreview: () => void
 }
 
 const PlaybackContext = createContext<PlaybackContextValue | null>(null)
@@ -43,6 +52,24 @@ export function PlaybackProvider({ children }: PlaybackProviderProps) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [current, setCurrent] = useState<PlayerTrack | null>(null)
   const [playingId, setPlayingId] = useState<string | null>(null)
+  const [previewEnded, setPreviewEnded] = useState(false)
+  const [previewEndKind, setPreviewEndKind] = useState<PreviewEndKind | null>(null)
+
+  const resetPreview = useCallback(() => {
+    setPreviewEnded(false)
+    setPreviewEndKind(null)
+  }, [])
+
+  const endPreview = useCallback((trackId: string) => {
+    const audio = audioRef.current
+    if (audio) {
+      audio.pause()
+      audio.currentTime = PREVIEW_SECONDS
+    }
+    setPlayingId(null)
+    setPreviewEnded(true)
+    setPreviewEndKind(previewEndKindForTrack(trackId))
+  }, [])
 
   const playTrack = useCallback(
     (track: PlayerTrack) => {
@@ -50,21 +77,47 @@ export function PlaybackProvider({ children }: PlaybackProviderProps) {
         if (!track.audioSrc) return
         const audio = audioRef.current
         if (!audio) return
-        if (audio.paused) void audio.play()
-        else audio.pause()
+
+        if (audio.paused) {
+          if (previewEnded || audio.currentTime >= PREVIEW_SECONDS) {
+            audio.currentTime = 0
+            resetPreview()
+          }
+          void audio.play()
+        } else {
+          audio.pause()
+        }
         return
       }
+
+      resetPreview()
       setCurrent(track)
     },
-    [current?.id],
+    [current?.id, previewEnded, resetPreview],
   )
 
   useEffect(() => {
     if (!current?.audioSrc) return
     const audio = audioRef.current
     if (!audio) return
+    audio.currentTime = 0
+    resetPreview()
     void audio.play().catch(() => {})
-  }, [current?.id, current?.audioSrc])
+  }, [current?.id, current?.audioSrc, resetPreview])
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio || !current?.audioSrc) return
+
+    const onTimeUpdate = () => {
+      if (audio.currentTime >= PREVIEW_SECONDS) {
+        endPreview(current.id)
+      }
+    }
+
+    audio.addEventListener('timeupdate', onTimeUpdate)
+    return () => audio.removeEventListener('timeupdate', onTimeUpdate)
+  }, [current?.id, current?.audioSrc, endPreview])
 
   const openSpotify = useCallback((url: string) => {
     audioRef.current?.pause()
@@ -86,13 +139,17 @@ export function PlaybackProvider({ children }: PlaybackProviderProps) {
   }, [])
 
   const onAudioEnded = useCallback(() => {
-    setPlayingId(null)
-  }, [])
+    if (current) endPreview(current.id)
+    else setPlayingId(null)
+  }, [current, endPreview])
 
   const value = useMemo(
     () => ({
       current,
       playingId,
+      previewEnded,
+      previewEndKind,
+      previewLimit: PREVIEW_SECONDS,
       audioRef,
       playTrack,
       openSpotify,
@@ -100,8 +157,21 @@ export function PlaybackProvider({ children }: PlaybackProviderProps) {
       onAudioPlay,
       onAudioPause,
       onAudioEnded,
+      resetPreview,
     }),
-    [current, playingId, playTrack, openSpotify, pauseAudio, onAudioPlay, onAudioPause, onAudioEnded],
+    [
+      current,
+      playingId,
+      previewEnded,
+      previewEndKind,
+      playTrack,
+      openSpotify,
+      pauseAudio,
+      onAudioPlay,
+      onAudioPause,
+      onAudioEnded,
+      resetPreview,
+    ],
   )
 
   return <PlaybackContext.Provider value={value}>{children}</PlaybackContext.Provider>

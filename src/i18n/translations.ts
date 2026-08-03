@@ -127,6 +127,10 @@ const es: PressKitCopy = {
     languageLabel: 'Idioma',
     coverAlt: 'Menfis Caravan',
     whatsappPrefix: 'WhatsApp:',
+    previewSeconds: (seconds) => `Vista previa · ${seconds} s`,
+    previewOverdoozeEnd: 'Escucha más en Spotify y otras plataformas.',
+    previewComingSoon: 'Próximamente en plataformas.',
+    previewReplay: 'Volver a escuchar la vista previa',
   },
 }
 
@@ -256,6 +260,10 @@ const en: PressKitCopy = {
     languageLabel: 'Language',
     coverAlt: 'Menfis Caravan',
     whatsappPrefix: 'WhatsApp:',
+    previewSeconds: (seconds) => `Preview · ${seconds} s`,
+    previewOverdoozeEnd: 'Listen more on Spotify and other platforms.',
+    previewComingSoon: 'Coming soon to streaming platforms.',
+    previewReplay: 'Replay preview',
   },
 }
 

@@ -42,6 +42,9 @@ export function GlobalPlayer() {
   const {
     current,
     playingId,
+    previewEnded,
+    previewEndKind,
+    previewLimit,
     audioRef,
     playTrack,
     openSpotify,
@@ -54,51 +57,37 @@ export function GlobalPlayer() {
   const { ui } = data
 
   const [progress, setProgress] = useState(0)
-  const [duration, setDuration] = useState(0)
-
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio || !current?.audioSrc) return
-    void audio.play().catch(() => {})
-  }, [current?.id, current?.audioSrc, audioRef])
 
   useEffect(() => {
     setProgress(0)
-    setDuration(0)
   }, [current?.id])
 
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
 
-    const syncDuration = () => setDuration(audio.duration || 0)
-    const syncProgress = () => setProgress(audio.currentTime || 0)
+    const syncProgress = () => setProgress(Math.min(audio.currentTime || 0, previewLimit))
 
-    audio.addEventListener('loadedmetadata', syncDuration)
-    audio.addEventListener('durationchange', syncDuration)
     audio.addEventListener('timeupdate', syncProgress)
     audio.addEventListener('seeked', syncProgress)
 
-    syncDuration()
     syncProgress()
 
     return () => {
-      audio.removeEventListener('loadedmetadata', syncDuration)
-      audio.removeEventListener('durationchange', syncDuration)
       audio.removeEventListener('timeupdate', syncProgress)
       audio.removeEventListener('seeked', syncProgress)
     }
-  }, [current?.id, current?.audioSrc, audioRef])
+  }, [current?.id, current?.audioSrc, audioRef, previewLimit])
 
   const handleSeek = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const audio = audioRef.current
-      if (!audio) return
-      const next = Number(e.target.value)
+      if (!audio || previewEnded) return
+      const next = Math.min(Number(e.target.value), previewLimit)
       audio.currentTime = next
       setProgress(next)
     },
-    [audioRef],
+    [audioRef, previewEnded, previewLimit],
   )
 
   const handleTogglePlay = useCallback(
@@ -113,7 +102,9 @@ export function GlobalPlayer() {
   if (!current) return null
 
   const isPlaying = playingId === current.id
-  const progressPct = duration > 0 ? (progress / duration) * 100 : 0
+  const progressPct = previewLimit > 0 ? (progress / previewLimit) * 100 : 0
+  const previewMessage =
+    previewEndKind === 'stream-more' ? ui.previewOverdoozeEnd : ui.previewComingSoon
 
   return (
     <Box
@@ -128,8 +119,8 @@ export function GlobalPlayer() {
         zIndex: 1200,
         visibility: isTransitioning ? 'hidden' : 'visible',
         bgcolor: 'rgba(18,18,18,0.96)',
-        borderTop: `1px solid ${isPlaying ? 'rgba(232,114,42,0.35)' : 'rgba(255,255,255,0.08)'}`,
-        boxShadow: isPlaying ? '0 -8px 24px rgba(232,114,42,0.08)' : 'none',
+        borderTop: `1px solid ${isPlaying ? 'rgba(232,114,42,0.35)' : previewEnded ? 'rgba(232,114,42,0.5)' : 'rgba(255,255,255,0.08)'}`,
+        boxShadow: isPlaying || previewEnded ? '0 -8px 24px rgba(232,114,42,0.08)' : 'none',
         pb: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
@@ -140,7 +131,7 @@ export function GlobalPlayer() {
           flexDirection: 'row',
           alignItems: 'center',
           gap: 1.25,
-          minHeight: 64,
+          minHeight: previewEnded ? 72 : 64,
         }}
       >
         <Box
@@ -152,6 +143,7 @@ export function GlobalPlayer() {
             overflow: 'hidden',
             bgcolor: current.coverTint ?? '#121212',
             border: '1px solid rgba(255,255,255,0.08)',
+            opacity: previewEnded ? 0.65 : 1,
           }}
         >
           {current.coverSrc ? (
@@ -165,17 +157,33 @@ export function GlobalPlayer() {
         </Box>
 
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography
-            sx={{
-              fontWeight: 500,
-              fontSize: '0.8rem',
-              letterSpacing: '0.04em',
-              color: 'rgba(255,255,255,0.9)',
-            }}
-            noWrap
-          >
-            {current.title}
-          </Typography>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline', minWidth: 0 }}>
+            <Typography
+              sx={{
+                fontWeight: 500,
+                fontSize: '0.8rem',
+                letterSpacing: '0.04em',
+                color: 'rgba(255,255,255,0.9)',
+                flex: 1,
+                minWidth: 0,
+              }}
+              noWrap
+            >
+              {current.title}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: '0.58rem',
+                color: brand.orange,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                flexShrink: 0,
+              }}
+            >
+              {ui.previewSeconds(previewLimit)}
+            </Typography>
+          </Stack>
+
           <Typography
             sx={{
               fontSize: '0.65rem',
@@ -187,7 +195,44 @@ export function GlobalPlayer() {
             {current.artist}
           </Typography>
 
-          {current.audioSrc ? (
+          {previewEnded ? (
+            <Stack direction="row" spacing={1} sx={{ mt: 0.85, alignItems: 'center', flexWrap: 'wrap', gap: 0.75 }}>
+              <Typography
+                sx={{
+                  fontSize: '0.72rem',
+                  color: brand.orange,
+                  fontWeight: 600,
+                  letterSpacing: '0.02em',
+                  flex: 1,
+                  minWidth: 0,
+                }}
+              >
+                {previewMessage}
+              </Typography>
+              {previewEndKind === 'stream-more' ? (
+                <IconButton
+                  size="small"
+                  aria-label={ui.openSpotify}
+                  onClick={() => openSpotify(spotifyArtistUrl)}
+                  sx={{ ...spotifyBtnSx, color: brand.orange }}
+                >
+                  <SpotifyGlyph size={18} />
+                </IconButton>
+              ) : null}
+              <IconButton
+                size="small"
+                aria-label={ui.previewReplay}
+                onClick={handleTogglePlay}
+                sx={playBtnSx}
+              >
+                <Typography component="span" sx={{ fontSize: '0.55rem', lineHeight: 1, color: brand.orange }}>
+                  ↺
+                </Typography>
+              </IconButton>
+            </Stack>
+          ) : null}
+
+          {current.audioSrc && !previewEnded ? (
             <Stack direction="row" spacing={0.75} sx={{ mt: 0.75, width: '100%', alignItems: 'center' }}>
               <audio
                 key={current.id}
@@ -240,16 +285,21 @@ export function GlobalPlayer() {
                   type="range"
                   className="global-player__progress"
                   min={0}
-                  max={duration || 0}
+                  max={previewLimit}
                   step={0.1}
-                  value={progress}
+                  value={Math.min(progress, previewLimit)}
                   onChange={handleSeek}
+                  disabled={previewEnded}
                   aria-label={ui.trackProgress(current.title)}
                   aria-valuemin={0}
-                  aria-valuemax={duration || 0}
+                  aria-valuemax={previewLimit}
                   aria-valuenow={progress}
                   style={{ '--progress': `${progressPct}%` } as CSSProperties}
-                  sx={{ width: '100%' }}
+                  sx={{
+                    width: '100%',
+                    opacity: previewEnded ? 0.45 : 1,
+                    pointerEvents: previewEnded ? 'none' : 'auto',
+                  }}
                 />
               </Box>
 
@@ -264,7 +314,7 @@ export function GlobalPlayer() {
                   textAlign: 'right',
                 }}
               >
-                {formatTime(duration)}
+                {formatTime(previewLimit)}
               </Typography>
 
               <IconButton

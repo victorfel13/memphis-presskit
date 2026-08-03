@@ -16,6 +16,10 @@ export type UiStrings = {
   languageLabel: string
   coverAlt: string
   whatsappPrefix: string
+  previewSeconds: (seconds: number) => string
+  previewOverdoozeEnd: string
+  previewComingSoon: string
+  previewReplay: string
 }
 
 export type PressKitCopy = {
