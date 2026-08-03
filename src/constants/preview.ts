@@ -4,5 +4,5 @@ export const PREVIEW_SECONDS = 20
 export type PreviewEndKind = 'stream-more' | 'coming-soon'
 
 export function previewEndKindForTrack(trackId: string): PreviewEndKind {
-  return trackId === 'overdooze' ? 'stream-more' : 'coming-soon'
+  return trackId === 'overdoze' ? 'stream-more' : 'coming-soon'
 }

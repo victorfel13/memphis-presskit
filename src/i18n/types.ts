@@ -20,6 +20,7 @@ export type UiStrings = {
   previewOverdoozeEnd: string
   previewComingSoon: string
   previewReplay: string
+  photoCredit: string
 }
 
 export type PressKitCopy = {

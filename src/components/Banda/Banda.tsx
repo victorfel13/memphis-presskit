@@ -3,6 +3,7 @@ import type { Member } from '../../data/pressKitAssets'
 import { brand } from '../../theme/brand'
 import { MemberPhoto } from '../shared/MemberPhoto'
 import { PageContent } from '../shared/PageContent'
+import { PhotoCredit } from '../shared/PhotoCredit'
 import { SubsectionLabel } from '../shared/SubsectionLabel'
 import { MembersCarousel } from './MembersCarousel'
 
@@ -58,6 +59,8 @@ export function Banda({ subtitle, members }: BandaProps) {
             <MemberCard key={member.nickname} member={member} />
           ))}
         </Box>
+
+        <PhotoCredit />
       </PageContent>
     </Box>
   )

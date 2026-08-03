@@ -131,6 +131,7 @@ const es: PressKitCopy = {
     previewOverdoozeEnd: 'Escucha más en Spotify y otras plataformas.',
     previewComingSoon: 'Próximamente en plataformas.',
     previewReplay: 'Volver a escuchar la vista previa',
+    photoCredit: 'Fotos por Esteban Medina',
   },
 }
 
@@ -264,6 +265,7 @@ const en: PressKitCopy = {
     previewOverdoozeEnd: 'Listen more on Spotify and other platforms.',
     previewComingSoon: 'Coming soon to streaming platforms.',
     previewReplay: 'Replay preview',
+    photoCredit: 'Photos by Esteban Medina',
   },
 }
 

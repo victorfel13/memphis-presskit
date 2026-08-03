@@ -73,10 +73,10 @@ export function getPressKitData(locale: Locale) {
       coverTint: '#3d1f4a',
       description: copy.musica.description,
       tracks: [
-        { id: 'overdooze', title: 'Overdooze', audioSrc: audioOverdooze },
+        { id: 'overdoze', title: 'Overdoze', audioSrc: audioOverdooze },
         { id: 'blinded-by-dust', title: 'Blinded by Dust', audioSrc: audioBlindedByDust },
-        { id: 'rous', title: 'Rous', audioSrc: audioRous },
         { id: 'wolf-apache', title: 'Wolf Apache', audioSrc: audioWolfApache },
+        { id: 'rous', title: 'Rous', audioSrc: audioRous },
       ],
       platforms: [
         { label: 'Spotify', url: spotifyArtistUrl },

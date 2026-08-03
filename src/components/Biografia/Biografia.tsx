@@ -4,6 +4,7 @@ import { brand } from '../../theme/brand'
 import { PageContent } from '../shared/PageContent'
 import { BodyText } from '../shared/BodyText'
 import { GalleryCarousel } from '../shared/GalleryCarousel'
+import { PhotoCredit } from '../shared/PhotoCredit'
 import { SectionTitle } from '../shared/SectionTitle'
 import { SubsectionLabel } from '../shared/SubsectionLabel'
 
@@ -23,6 +24,7 @@ export function Biografia({ title, subtitle, paragraphs, images }: BiografiaProp
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={4} sx={{ width: '100%', minWidth: 0 }}>
           <Box sx={{ width: { xs: '100%', md: '42%' }, minWidth: 0 }}>
             <GalleryCarousel images={images} />
+            <PhotoCredit align="center" />
           </Box>
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <SubsectionLabel>{subtitle}</SubsectionLabel>
