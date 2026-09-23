@@ -4,7 +4,7 @@ import { NavigationProvider } from './context/NavigationContext'
 import { LanguageProvider, useLanguage } from './context/LanguageContext'
 import { Navbar } from './components/Navbar/Navbar'
 import { Inicio } from './components/Inicio/Inicio'
-import { Estreno } from './components/Estreno/Estreno'
+import { Lanzamientos } from './components/Lanzamientos/Lanzamientos'
 import { Biografia } from './components/Biografia/Biografia'
 import { Banda } from './components/Banda/Banda'
 import { Propuesta } from './components/Propuesta/Propuesta'
@@ -18,7 +18,7 @@ import { brand, pageBottomPadWithPlayer, scrollMarginTop } from './theme/brand'
 
 function AppContent() {
   const { data } = useLanguage()
-  const { bandName, nav, inicio, estreno, biografia, banda, propuesta, musica, videos, tienda, contacto, footer } = data
+  const { bandName, nav, inicio, lanzamientos, biografia, banda, propuesta, musica, videos, tienda, contacto, footer } = data
   const { current } = usePlayback()
 
   return (
@@ -47,16 +47,13 @@ function AppContent() {
         social={inicio.social}
       />
 
-      <Estreno
-        title={estreno.title}
-        subtitle={estreno.subtitle}
-        trackTitle={estreno.trackTitle}
-        releaseLabel={estreno.releaseLabel}
-        description={estreno.description}
-        coverSrc={estreno.coverSrc}
-        preSaveUrl={estreno.preSaveUrl}
-        preSaveLabel={estreno.preSaveLabel}
-        preSaveHint={estreno.preSaveHint}
+      <Lanzamientos
+        title={lanzamientos.title}
+        releasedLabel={lanzamientos.releasedLabel}
+        upcomingLabel={lanzamientos.upcomingLabel}
+        kinds={lanzamientos.kinds}
+        countdown={lanzamientos.countdown}
+        items={lanzamientos.items}
       />
 
       <Biografia

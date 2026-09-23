@@ -17,6 +17,16 @@ import {
   appleMusicArtistUrl,
 } from './pressKitAssets'
 
+const releaseDates = [
+  { id: 'blinded-by-dust', date: '2026-09-03', kind: 'single' as const },
+  { id: 'wolf-apache', date: '2026-09-20', kind: 'single' as const },
+  { id: 'rous', date: '2026-10-04', kind: 'single' as const },
+  { id: 'purple-hair', date: '2026-10-25', kind: 'single' as const },
+  { id: 'like-a-crucifixion', date: '2026-11-09', kind: 'single' as const },
+  { id: 'menfis-caravan-lp', date: '2026-11-18', kind: 'album' as const },
+  { id: 'material-fisico', date: '2026-11-20', kind: 'event' as const },
+]
+
 export function getPressKitData(locale: Locale) {
   const copy = translations[locale]
 
@@ -46,6 +56,24 @@ export function getPressKitData(locale: Locale) {
       preSaveUrl: 'https://hypeddit.com/menfiscaravan/overdoze',
       preSaveLabel: copy.estreno.preSaveLabel,
       preSaveHint: copy.estreno.preSaveHint,
+    },
+    lanzamientos: {
+      title: copy.lanzamientos.title,
+      releasedLabel: copy.lanzamientos.released,
+      upcomingLabel: copy.lanzamientos.upcoming,
+      kinds: copy.lanzamientos.kinds,
+      countdown: {
+        ...copy.lanzamientos.countdown,
+        target: `${releaseDates.find((release) => release.id === 'menfis-caravan-lp')?.date ?? '2026-11-18'}T00:00:00-06:00`,
+      },
+      items: releaseDates.map((release) => {
+        const copyItem = copy.lanzamientos.items.find((item) => item.id === release.id)
+        return {
+          ...release,
+          dateLabel: copyItem?.dateLabel ?? release.date,
+          title: copyItem?.title ?? release.id,
+        }
+      }),
     },
     biografia: {
       title: copy.biografia.title,

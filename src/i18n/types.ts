@@ -37,6 +37,31 @@ export type PressKitCopy = {
     preSaveLabel: string
     preSaveHint: string
   }
+  lanzamientos: {
+    title: string
+    released: string
+    upcoming: string
+    kinds: {
+      single: string
+      album: string
+      event: string
+    }
+    countdown: {
+      eyebrow: string
+      title: string
+      dateLabel: string
+      days: string
+      hours: string
+      minutes: string
+      seconds: string
+      available: string
+    }
+    items: {
+      id: string
+      dateLabel: string
+      title: string
+    }[]
+  }
   biografia: {
     title: string
     subtitle: string

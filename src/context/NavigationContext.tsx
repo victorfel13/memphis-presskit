@@ -44,7 +44,10 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
       scrollToSection(hashId)
       return
     }
-    scrollToSection('estreno')
+    if (window.location.hash !== '#inicio') {
+      history.replaceState(null, '', '#inicio')
+    }
+    scrollToSection('inicio')
   }, [])
 
   const finishTransition = useCallback(() => {
@@ -62,6 +65,10 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
       if (active) return
 
       if (!document.getElementById(sectionId)) return
+
+      if (window.location.hash !== `#${sectionId}`) {
+        history.replaceState(null, '', `#${sectionId}`)
+      }
 
       if (prefersReducedMotion()) {
         scrollToSection(sectionId)

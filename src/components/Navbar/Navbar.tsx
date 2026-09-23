@@ -9,7 +9,7 @@ import {
   ListItemText,
   Stack,
 } from '@mui/material'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { NavItem } from '../../data/pressKitAssets'
 import { useNavigation } from '../../context/NavigationContext'
 import { useLanguage } from '../../context/LanguageContext'
@@ -41,29 +41,65 @@ const navSlotSx = {
 
 export function Navbar({ items }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const { navigateTo } = useNavigation()
+  const [activeId, setActiveId] = useState(() => {
+    const hashId = window.location.hash.replace(/^#/, '')
+    return items.some((item) => item.id === hashId) ? hashId : (items[0]?.id ?? 'inicio')
+  })
+  const { navigateTo, isTransitioning } = useNavigation()
   const { data } = useLanguage()
   const { ui } = data
+  const sectionIds = items.map((item) => item.id).join('|')
+
+  useEffect(() => {
+    const ids = sectionIds.split('|').filter(Boolean)
+
+    const updateActive = () => {
+      if (isTransitioning) return
+      const offset = Math.round(window.innerHeight * 0.4)
+      let current = ids[0] ?? 'inicio'
+      for (const id of ids) {
+        const el = document.getElementById(id)
+        if (el && el.getBoundingClientRect().top <= offset) {
+          current = id
+        }
+      }
+      setActiveId(current)
+    }
+
+    updateActive()
+    const frame = window.requestAnimationFrame(updateActive)
+    window.addEventListener('scroll', updateActive, { passive: true })
+    window.addEventListener('resize', updateActive)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', updateActive)
+      window.removeEventListener('resize', updateActive)
+    }
+  }, [sectionIds, isTransitioning])
 
   const goTo = useCallback(
     (id: string) => {
+      setActiveId(id)
       navigateTo(id)
       setMobileOpen(false)
     },
     [navigateTo],
   )
 
-  const linkSx = {
-    color: brand.white,
+  const linkSx = (isActive: boolean) => ({
+    color: isActive ? brand.orange : brand.white,
     fontSize: '0.72rem',
     fontWeight: 600,
     letterSpacing: '0.1em',
     textTransform: 'uppercase' as const,
     minWidth: 0,
-    p: 0,
+    height: '100%',
+    px: 0,
+    borderRadius: 0,
+    borderBottom: `2px solid ${isActive ? brand.orange : 'transparent'}`,
     lineHeight: 1,
     '&:hover': { bgcolor: 'transparent', color: brand.orange },
-  }
+  })
 
   return (
     <Box
@@ -120,11 +156,19 @@ export function Navbar({ items }: NavbarProps) {
               height: '100%',
             }}
           >
-            {items.slice(1).map((item) => (
-              <Button key={item.id} onClick={() => goTo(item.id)} sx={linkSx}>
-                {item.label}
-              </Button>
-            ))}
+            {items.slice(1).map((item) => {
+              const isActive = item.id === activeId
+              return (
+                <Button
+                  key={item.id}
+                  onClick={() => goTo(item.id)}
+                  aria-current={isActive ? 'true' : undefined}
+                  sx={linkSx(isActive)}
+                >
+                  {item.label}
+                </Button>
+              )
+            })}
             <LanguageToggle />
           </Stack>
 
@@ -160,7 +204,16 @@ export function Navbar({ items }: NavbarProps) {
             <Divider sx={{ borderColor: brand.borderSubtle }} />
             <List dense>
               {items.map((item) => (
-                <ListItemButton key={item.id} onClick={() => goTo(item.id)}>
+                <ListItemButton
+                  key={item.id}
+                  selected={item.id === activeId}
+                  onClick={() => goTo(item.id)}
+                  sx={{
+                    color: item.id === activeId ? brand.orange : brand.white,
+                    '&.Mui-selected': { bgcolor: 'transparent', color: brand.orange },
+                    '&.Mui-selected:hover': { bgcolor: 'rgba(232, 114, 42, 0.08)' },
+                  }}
+                >
                   <ListItemText
                     primary={item.label}
                     slotProps={{ primary: { sx: { letterSpacing: '0.06em' } } }}

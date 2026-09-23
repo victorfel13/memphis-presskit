@@ -39,6 +39,15 @@ export {
   shopImage,
 }
 
+export type ReleaseKind = 'single' | 'album' | 'event'
+
+export type ReleaseItem = {
+  id: string
+  date: string
+  title: string
+  kind: ReleaseKind
+}
+
 export const memberPhotos = {
   betin: photoBetin,
   hugo: photoHugo,

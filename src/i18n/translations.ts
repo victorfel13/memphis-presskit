@@ -3,7 +3,7 @@ import type { Locale, PressKitCopy } from './types'
 const es: PressKitCopy = {
   nav: [
     { id: 'inicio', label: 'Inicio' },
-    { id: 'estreno', label: 'Estreno' },
+    { id: 'lanzamientos', label: 'Lanzamientos' },
     { id: 'biografia', label: 'Biografía' },
     { id: 'banda', label: 'La Banda' },
     { id: 'musica', label: 'Discografía' },
@@ -27,6 +27,35 @@ const es: PressKitCopy = {
     preSaveLabel: 'Pre-Save — Overdoze',
     preSaveHint:
       'Te llevamos a Hypeddit para conectar Spotify, Apple Music, Deezer u otras plataformas y guardar el single antes del estreno.',
+  },
+  lanzamientos: {
+    title: 'Próximos lanzamientos',
+    released: 'Ya disponible',
+    upcoming: 'Próximamente',
+    kinds: {
+      single: 'Sencillo',
+      album: 'LP',
+      event: 'Presentación',
+    },
+    countdown: {
+      eyebrow: 'Lanzamiento del LP',
+      title: 'Menfis Caravan',
+      dateLabel: '18 de noviembre de 2026',
+      days: 'Días',
+      hours: 'Horas',
+      minutes: 'Minutos',
+      seconds: 'Segundos',
+      available: 'Ya disponible',
+    },
+    items: [
+      { id: 'blinded-by-dust', dateLabel: '3 de septiembre', title: 'Blinded by Dust' },
+      { id: 'wolf-apache', dateLabel: '20 de septiembre', title: 'Wolf Apache' },
+      { id: 'rous', dateLabel: '4 de octubre', title: 'Rous' },
+      { id: 'purple-hair', dateLabel: '25 de octubre', title: 'Purple Hair' },
+      { id: 'like-a-crucifixion', dateLabel: '9 de noviembre', title: 'Like a Crucifixion' },
+      { id: 'menfis-caravan-lp', dateLabel: '18 de noviembre', title: 'Menfis Caravan' },
+      { id: 'material-fisico', dateLabel: '20 de noviembre', title: 'Presentación del material físico' },
+    ],
   },
   biografia: {
     title: 'Biografía',
@@ -138,7 +167,7 @@ const es: PressKitCopy = {
 const en: PressKitCopy = {
   nav: [
     { id: 'inicio', label: 'Home' },
-    { id: 'estreno', label: 'Release' },
+    { id: 'lanzamientos', label: 'Releases' },
     { id: 'biografia', label: 'Bio' },
     { id: 'banda', label: 'The Band' },
     { id: 'musica', label: 'Discography' },
@@ -162,6 +191,35 @@ const en: PressKitCopy = {
     preSaveLabel: 'Pre-Save — Overdoze',
     preSaveHint:
       'We’ll take you to Hypeddit to connect Spotify, Apple Music, Deezer, or other platforms and save the single before release.',
+  },
+  lanzamientos: {
+    title: 'Upcoming Releases',
+    released: 'Out now',
+    upcoming: 'Coming soon',
+    kinds: {
+      single: 'Single',
+      album: 'LP',
+      event: 'Event',
+    },
+    countdown: {
+      eyebrow: 'LP release',
+      title: 'Menfis Caravan',
+      dateLabel: 'November 18, 2026',
+      days: 'Days',
+      hours: 'Hours',
+      minutes: 'Minutes',
+      seconds: 'Seconds',
+      available: 'Out now',
+    },
+    items: [
+      { id: 'blinded-by-dust', dateLabel: 'September 3', title: 'Blinded by Dust' },
+      { id: 'wolf-apache', dateLabel: 'September 20', title: 'Wolf Apache' },
+      { id: 'rous', dateLabel: 'October 4', title: 'Rous' },
+      { id: 'purple-hair', dateLabel: 'October 25', title: 'Purple Hair' },
+      { id: 'like-a-crucifixion', dateLabel: 'November 9', title: 'Like a Crucifixion' },
+      { id: 'menfis-caravan-lp', dateLabel: 'November 18', title: 'Menfis Caravan' },
+      { id: 'material-fisico', dateLabel: 'November 20', title: 'Physical release event' },
+    ],
   },
   biografia: {
     title: 'Biography',
