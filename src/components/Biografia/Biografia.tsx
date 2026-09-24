@@ -22,7 +22,7 @@ export function Biografia({ title, subtitle, paragraphs, images }: BiografiaProp
         <SectionTitle>{title}</SectionTitle>
 
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={4} sx={{ width: '100%', minWidth: 0 }}>
-          <Box sx={{ width: { xs: '100%', md: '42%' }, minWidth: 0 }}>
+          <Box sx={{ width: { xs: '100%', md: '30%' }, maxWidth: { xs: 300, md: 360 }, mx: { xs: 'auto', md: 0 }, minWidth: 0 }}>
             <GalleryCarousel images={images} />
             <PhotoCredit align="center" />
           </Box>

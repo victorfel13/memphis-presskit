@@ -65,7 +65,7 @@ export function GalleryCarousel({ images }: GalleryCarouselProps) {
 
   return (
     <>
-      <Box sx={{ position: 'relative', width: '100%', maxWidth: '100%', overflowX: 'hidden' }}>
+      <Box sx={{ position: 'relative', width: '100%', maxWidth: '100%', overflowX: 'hidden', mx: 'auto' }}>
         {total > 1 ? <ArrowButton label="Foto anterior" direction="prev" onClick={goPrev} /> : null}
 
         <Box
@@ -80,7 +80,7 @@ export function GalleryCarousel({ images }: GalleryCarouselProps) {
             cursor: 'pointer',
             overflow: 'hidden',
             bgcolor: brand.grey,
-            aspectRatio: '4/3',
+            aspectRatio: '1 / 1',
             '&:hover img': { opacity: 0.9 },
           }}
         >
@@ -89,7 +89,7 @@ export function GalleryCarousel({ images }: GalleryCarouselProps) {
               component="img"
               src={current.src}
               alt={current.alt}
-              sx={{ ...colorPhotoSx, width: '100%', height: '100%' }}
+              sx={{ ...colorPhotoSx, width: '100%', height: '100%', objectFit: 'contain' }}
             />
           ) : null}
         </Box>
